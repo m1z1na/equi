@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class ClientController {
+public class ClientController<summ> {
 
     private final ClientService clientService;
 
@@ -26,11 +26,12 @@ public class ClientController {
     }
 
     @GetMapping(value = "/getEqui")
+  //  public Integer read() {
     public ResponseEntity<List<Client>> read() {
-        final List<Client> clients = clientService.readAll();
+        final List<Client> equi = clientService.readAll();
 
-        return clients != null &&  !clients.isEmpty()
-                ? new ResponseEntity<>(clients, HttpStatus.OK)
+        return equi != null &&  !equi.isEmpty()
+                ? new ResponseEntity<>(equi, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
