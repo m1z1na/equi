@@ -4,6 +4,16 @@ public class Client {
     private Integer id;
     private String name;
     private Integer amount;
+
+    public Integer getCost() {
+        return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
+    }
+
+    private Integer cost;
     private String waers;
     private Integer markup;
 
@@ -12,6 +22,7 @@ public class Client {
         this.waers = waers;
         this.markup = markup;
         this.amount = amount;
+        this.cost = cost;
         this.name = name;
     }
 
