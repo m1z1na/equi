@@ -6,10 +6,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Client {
+
     private Integer id;
     private String name;
     private Integer amount;
-
     private Integer cost;
     private String waers;
     private Integer markup;
