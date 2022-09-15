@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ClientService {
     /**
-     * Создает нового обоорудование
+     * Создает новое обоорудование
      * @param equi - обоорудования для создания
      */
     void create(Client equi);
@@ -25,7 +25,7 @@ public interface ClientService {
     Client read(int id);
 
     /**
-     * Обновляет клиента с заданным ID,
+     * Обновляет обоорудование с заданным ID,
      * в соответствии с переданным обоорудованием
      * @param equi - обоорудования в соответсвии с которым нужно обновить данные
      * @param id - id обоорудования которого нужно обновить
