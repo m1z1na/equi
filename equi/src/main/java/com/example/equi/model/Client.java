@@ -22,6 +22,4 @@ public class Client {
         this.cost = cost;
         this.name = name;
     }
-
-
 }
