@@ -14,7 +14,7 @@ public class Client {
     private String waers;
     private Integer markup;
 
-    public Client(Integer amount, String waers, Integer markup) {
+    public Client( String name, String waers, Integer amount, Integer cost, Integer markup) {
         this.amount = amount;
         this.waers = waers;
         this.markup = markup;
