@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @RestController
@@ -23,13 +22,13 @@ public class ClientController<summ> {
         this.clientService = clientService;
     }
 
-    @PostMapping(value = "/CreateEqui")
+    @PostMapping(value = "/equi")
     public ResponseEntity<?> create(@RequestBody Client equi) {
         clientService.create(equi);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/GetEqui")
+    @GetMapping(value = "/equi")
   //  public Integer read() {
     public ResponseEntity<List<Client>> read() {
         final List<Client> equi = clientService.readAll();
@@ -39,7 +38,7 @@ public class ClientController<summ> {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/GetEqui/{id}")
+    @GetMapping(value = "/equi/{id}")
     public ResponseEntity<Client> read(@PathVariable(name = "id") int id) {
         final Client client = clientService.read(id);
 
@@ -48,7 +47,7 @@ public class ClientController<summ> {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/ChangeEqui/{id}")
+    @PutMapping(value = "/equi/{id}")
     public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Client equi) {
         final boolean updated = clientService.update(equi, id);
 
@@ -57,7 +56,7 @@ public class ClientController<summ> {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @DeleteMapping(value = "/DeleteEqui/{id}")
+    @DeleteMapping(value = "/equi/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
         final boolean deleted = clientService.delete(id);
 
@@ -66,54 +65,20 @@ public class ClientController<summ> {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-
-    @GetMapping(value = "/GetEquiCost")
-    protected void doGetCost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<Client> equi = clientService.readAll();
-        Integer Sum = 0;
-
-        for (int i = 0; i < equi.size(); i++) {
-            Sum =  Sum + equi.get(i).getAmount() * equi.get(i).getCost();
-
-        }
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(Sum);
-        out.flush();
+    // Стоимость
+    @GetMapping(value = "/cost")
+    protected @ResponseBody
+    int doGetCost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return clientService.getCost();
     }
-
-    @GetMapping(value = "/GetEquiProfit")
-    protected void doGetProfit(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<Client> equi = clientService.readAll();
-        Integer Sum = 0;
-
-        for (int i = 0; i < equi.size(); i++) {
-            Sum =  Sum + ( equi.get(i).getAmount() * equi.get(i).getCost()  +
-                           equi.get(i).getAmount() * equi.get(i).getCost() / 100 * equi.get(i).getMarkup() -
-                           equi.get(i).getAmount() * equi.get(i).getCost() );
-
-        }
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(Sum);
-        out.flush();
+    // Прибыль
+    @GetMapping(value = "/profit")
+    protected @ResponseBody Integer doGetProfit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return clientService.getProfit();
     }
-    @GetMapping(value = "/GetEquiCostCustomer")
-    protected void doGetCostCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final List<Client> equi = clientService.readAll();
-        Integer Sum = 0;
-
-        for (int i = 0; i < equi.size(); i++) {
-            Sum =  Sum + ( equi.get(i).getAmount() * equi.get(i).getCost() +
-                           equi.get(i).getAmount() * equi.get(i).getCost() / 100 * equi.get(i).getMarkup() );
-
-        }
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(Sum);
-        out.flush();
+    // Стоимость для заказчика
+    @GetMapping(value = "/costCustomer")
+    protected  @ResponseBody  Integer doGetCostCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return clientService.getCostCustomer();
     }
 }

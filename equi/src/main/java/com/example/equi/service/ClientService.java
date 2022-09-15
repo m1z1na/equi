@@ -41,4 +41,10 @@ public interface ClientService {
     boolean delete(int id);
 
     <client> List<client> readAll();
+    // кол-во * стоимость за шт * на наценку
+    int getCostCustomer();
+    // стоимость для заказчика -  стоимость для компании
+    int getProfit();
+    // кол-во * стоимость за шт
+    int getCost();
 }

@@ -3,10 +3,10 @@ package com.example.equi.service;
 import com.example.equi.model.Client;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ClientServiceImpl  implements ClientService {
@@ -49,4 +49,40 @@ public class ClientServiceImpl  implements ClientService {
     public boolean delete(int id) {
         return CLIENT_REPOSITORY_MAP.remove(id) != null;
     }
+
+    @Override
+    public int getCostCustomer() {
+        Integer sum = 0;
+        final List<Client> equi = this.readAll();
+        for (int i = 0; i < equi.size(); i++) {
+            sum =  sum + ( equi.get(i).getAmount() * equi.get(i).getCost() +
+                    equi.get(i).getAmount() * equi.get(i).getCost() / 100 * equi.get(i).getMarkup() );
+        }
+        return sum;
+    }
+
+
+
+    @Override
+    public int getProfit() {
+//        Integer sum = 0;
+//        final List<Client> equi = this.readAll();
+//        for (int i = 0; i < equi.size(); i++) {
+//            sum =  sum + ( equi.get(i).getAmount() * equi.get(i).getCost()  +
+//                    equi.get(i).getAmount() * equi.get(i).getCost() / 100 * equi.get(i).getMarkup() -
+//                    equi.get(i).getAmount() * equi.get(i).getCost() );
+//
+//        }
+       return this.getCostCustomer() - this.getCost();
+    }
+
+    @Override
+    public int getCost(){
+        Integer sum = 0;
+        final List<Client> equi = this.readAll();
+        for (int i = 0; i < equi.size(); i++) {
+                sum =  sum + equi.get(i).getAmount() * equi.get(i).getCost();
+        }
+        return sum;
+}
 }
