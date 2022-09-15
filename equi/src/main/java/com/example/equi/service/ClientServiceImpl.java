@@ -11,10 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ClientServiceImpl  implements ClientService {
 
-    // Хранилище клиентов
+
     private static final Map<Integer, Client> CLIENT_REPOSITORY_MAP = new HashMap<>();
 
-    // Переменная для генерации ID клиента
+
     private static final AtomicInteger CLIENT_ID_HOLDER = new AtomicInteger();
 
     @Override
