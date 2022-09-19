@@ -11,13 +11,15 @@
 <body>
  
 <br>
-<br>
+ 
 <table class="table">
     <thead class="thead-dark">
-    <th></th>
+   
     <th>Название</th>
+    <th>Кол-во</th>
     <th>Стоимость</th>
-    <th></th>
+    <th>Валюта</th>
+    <th>Наценка</th>
     <th></th>
     <th></th>
     <th></th>
@@ -27,13 +29,18 @@
         <tr>
             <td th:text="${equi.id}"></td>
             <td th:text="${equi.name}"></td>
+            <td th:text="${equi.amount}"></td>
             <td th:text="${equi.cost}"></td>
+		    <td th:text="${equi.waers}"></td>
+			<td th:text="${equi.markup}"></td>
             <td><a th:href="@{'http://localhost:1091/admin/edit/' + ${equi.id}}" class="badge badge-primary">Редактировать</a></td>
             <td><a th:href="@{'http://localhost:1091/admin/delete/' + ${equi.id}}" class="badge badge-danger">Удалить</a></td>  
         </tr>
     </div>
     <tr>
-        <td colspan="4" align="center"><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a></td>
+    <!--     <td colspan="12" "><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a></td>
+      -->   
+	  <td colspan="12" ><a th:href="adminForm.html" class="badge badge-success">Добавить</a></td>
     </tr>
     </tbody>
 </table>

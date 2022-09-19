@@ -11,7 +11,7 @@
 </head>
 <body> 
 <br>
-<br>
+ 
 <form class="admin" th:action="@{/admin/add}" th:object="${equi}" method="post">
     <input type="text" th:field="*{id}" hidden/>
     <div class="form-group">
@@ -19,6 +19,13 @@
         <input type="text" class="form-control" id="equiName" th:field="*{name}"/>
         <label for="text">Стоимость</label>
         <input type="text" class="form-control" id="text" th:field="*{cost}"/>
+		<label for="equiName">Кол-во</label>
+        <input type="text" class="form-control" id="equiName" th:field="*{amount}"/>
+		<label for="equiName">Валюта</label>
+        <input type="text" class="form-control" id="equiName" th:field="*{waers}"/>
+		<label for="equiName">Наценка</label>
+        <input type="text" class="form-control" id="equiName" th:field="*{markup}"/>
+ 
     </div>
     <p><input type="submit" class="btn btn-primary" value="Сохранить"/>
 </form>
