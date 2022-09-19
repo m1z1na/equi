@@ -141,12 +141,12 @@ public class ClientServiceImpl  implements ClientService {
 
     public boolean update(Client equi, int id) {
         String sql = "UPDATE equii "
-                + "SET name = " + equi.getName()
-                +  ", amount = " + equi.getAmount()
-                +  ", waers = " + equi.getWaers()
-                +  ", markup = " + equi.getMarkup()
-                +  ", cost = " + equi.getCost()
-                + " WHERE id =" + id;
+                + "SET name = '" + equi.getName()
+                +  "' , amount = '" + equi.getAmount()
+                +  "' , waers = '" + equi.getWaers()
+                +  "' , markup = '" + equi.getMarkup()
+                +  "' , cost = '" + equi.getCost()
+                + "' WHERE id =" + id;
 //    public boolean update(Client client, int id) {
 //        if (CLIENT_REPOSITORY_MAP.containsKey(id)) {
 //            client.setId(id);
