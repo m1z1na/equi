@@ -2,8 +2,6 @@ package com.example.equi.service;
 
 import com.example.equi.model.Client;
 
-import java.util.List;
-
 public interface ClientService {
     /**
      * Создает новое обоорудование
@@ -41,7 +39,7 @@ public interface ClientService {
      */
     boolean delete(int id);
 
-    <client> List<client> readAll();
+    <client> String readAll() throws Exception;
     // кол-во * стоимость за шт * на наценку
     int getCostCustomer() throws Exception;
     // стоимость для заказчика -  стоимость для компании

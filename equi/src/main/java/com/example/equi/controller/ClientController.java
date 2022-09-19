@@ -28,17 +28,18 @@ public class ClientController<summ> {
         return  clientService.create(equi);
 //        return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    //DB
     @GetMapping(value = "/equi")
   //  public Integer read() {
-    public ResponseEntity<List<Client>> read() {
-        final List<Client> equi = clientService.readAll();
-
-        return equi != null &&  !equi.isEmpty()
-                ? new ResponseEntity<>(equi, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public String read() throws Exception {
+//    public ResponseEntity<List<Client>> read() {
+//        final List<Client> equi = clientService.readAll();
+        return  clientService.readAll();
+//        return equi != null &&  !equi.isEmpty()
+//                ? new ResponseEntity<>(equi, HttpStatus.OK)
+//                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+    //DB
     @GetMapping(value = "/equi/{id}")
     public String read(@PathVariable(name = "id") int id) throws Exception {
         return clientService.read(id);

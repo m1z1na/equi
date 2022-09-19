@@ -59,11 +59,42 @@ public class ClientServiceImpl  implements ClientService {
         }
 
 
-    @Override
-    public List<Client> readAll() {
-        return new ArrayList<>(CLIENT_REPOSITORY_MAP.values());
-    }
+//    @Override
+    public String readAll() throws Exception {
+//    public List<Client> readAll() {
+//        return new ArrayList<>(CLIENT_REPOSITORY_MAP.values());
+//        return new ArrayList<>(CLIENT_REPOSITORY_MAP.values());
 
+        String response = null;
+        String sql = "SELECT name, amount, cost, markup, waers FROM equii";
+        try (Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+
+                ResultSet rs1 = statement.executeQuery( sql);
+                while ( rs1.next() ) {
+//                    RowId out = rs1.getRowId(1);
+                    Integer amount = rs1.getInt("amount");
+                    Integer cost = rs1.getInt("cost");
+                    Integer markup  = rs1.getInt("markup");
+                    String name  = rs1.getString("name");
+                    String waers  = rs1.getString("waers");
+                    response = String.valueOf( amount);
+//                return name ;
+                    response = "{\n    \"name\": \"" +  name +  "\",\n" +
+                            "    \"amount\": " +  amount + ",\n" +
+                            "    \"cost\": " +  cost + ",\n" +
+                            "    \"waers\": \"" + waers +"\",\n" +
+                            "    \"markup\": " +  cost + "\n}";
+                }
+            } catch (Exception e) {
+                return  e.getMessage();
+
+//            }
+
+            }
+            return response;
+    }
+    }
     @Override
     public String read(int id) throws Exception {
         String response = null;
@@ -102,20 +133,38 @@ public class ClientServiceImpl  implements ClientService {
 
     }
 
-    @Override
+//    @Override
+//    public boolean update(Client equi, int id) {
+//        return false;
+//    }
+
+
     public boolean update(Client equi, int id) {
-        return false;
-    }
-
-
-    public boolean update(int id) throws Exception {
+        String sql = "UPDATE equii "
+                + "SET name = " + equi.getName()
+                +  ", amount = " + equi.getAmount()
+                +  ", waers = " + equi.getWaers()
+                +  ", markup = " + equi.getMarkup()
+                +  ", cost = " + equi.getCost()
+                + " WHERE id =" + id;
 //    public boolean update(Client client, int id) {
 //        if (CLIENT_REPOSITORY_MAP.containsKey(id)) {
 //            client.setId(id);
 //            CLIENT_REPOSITORY_MAP.put(id, client);
 //            return true;
 //        }
-
+        try (Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+//                return  true;
+                statement.executeUpdate(sql);
+                return  true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
