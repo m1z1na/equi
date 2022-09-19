@@ -8,8 +8,9 @@ public interface ClientService {
     /**
      * Создает новое обоорудование
      * @param equi - обоорудования для создания
+     * @return
      */
-    void create(Client equi);
+    String create(Client equi);
 
     /**
      * Возвращает список всех имеющихся обоорудований
@@ -22,7 +23,7 @@ public interface ClientService {
      * @param id - ID обоорудования
      * @return - объект обоорудования с заданным ID
      */
-    Client read(int id);
+    String read(int id) throws Exception;
 
     /**
      * Обновляет обоорудование с заданным ID,
@@ -42,9 +43,9 @@ public interface ClientService {
 
     <client> List<client> readAll();
     // кол-во * стоимость за шт * на наценку
-    int getCostCustomer();
+    int getCostCustomer() throws Exception;
     // стоимость для заказчика -  стоимость для компании
-    int getProfit();
+    int getProfit() throws Exception;
     // кол-во * стоимость за шт
     int getCost();
 }

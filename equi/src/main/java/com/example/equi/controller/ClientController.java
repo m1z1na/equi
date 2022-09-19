@@ -21,11 +21,12 @@ public class ClientController<summ> {
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
-
+    //DB
     @PostMapping(value = "/equi")
-    public ResponseEntity<?> create(@RequestBody Client equi) {
-        clientService.create(equi);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    public String create(@RequestBody Client equi) {
+        return  clientService.create(equi);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/equi")
@@ -39,12 +40,13 @@ public class ClientController<summ> {
     }
 
     @GetMapping(value = "/equi/{id}")
-    public ResponseEntity<Client> read(@PathVariable(name = "id") int id) {
-        final Client client = clientService.read(id);
-
-        return client != null
-                ? new ResponseEntity<>(client, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public String read(@PathVariable(name = "id") int id) throws Exception {
+        return clientService.read(id);
+//        final Client client = clientService.read(id);
+//
+//        return client != null
+//                ? new ResponseEntity<>(client, HttpStatus.OK)
+//                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/equi/{id}")
@@ -55,30 +57,32 @@ public class ClientController<summ> {
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
+    //DB
     @DeleteMapping(value = "/equi/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
-        final boolean deleted = clientService.delete(id);
+    public boolean delete(@PathVariable(name = "id") int id) {
+//    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
+        return clientService.delete(id);
 
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+//        return deleted
+//                ? new ResponseEntity<>(HttpStatus.OK)
+//                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    // Стоимость
+    //DB Стоимость
     @GetMapping(value = "/cost")
     protected @ResponseBody
     int doGetCost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         return clientService.getCost();
     }
-    // Прибыль
+    //DB Прибыль
     @GetMapping(value = "/profit")
-    protected @ResponseBody Integer doGetProfit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected @ResponseBody Integer doGetProfit(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return clientService.getProfit();
     }
-    // Стоимость для заказчика
+    //DB Стоимость для заказчика
     @GetMapping(value = "/costCustomer")
-    protected  @ResponseBody  Integer doGetCostCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//    protected  @ResponseBody  Integer doGetCostCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected  @ResponseBody  Integer doGetCostCustomer(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return clientService.getCostCustomer();
     }
 }
