@@ -2,10 +2,10 @@ package com.example.equi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.sql.*;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+//@ComponentScan({"com.baeldung.component.inscope", "com.baeldung.component.scannedscope"})
 public class EquiApplication {
 //	private static String url = "jdbc:postgresql://localhost:5432/postgres";
 //	private static Connection getConnection() throws Exception {
@@ -16,6 +16,12 @@ public class EquiApplication {
 //		return DriverManager.getConnection(url, login, password);
 //	}
 	public static void main(String[] args) throws Exception {
+
+
+
+//            List<Equi2> equi = new ArrayList<>();
+//            EquiRepository.findAll().forEach(equi::add);
+
 		SpringApplication.run(EquiApplication.class, args);
 
 

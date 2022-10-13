@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<body>
+ 
+<br>
+ 
+<table class="table">
+    <thead class="thead-dark">
+   
+    <th>Название</th>
+    <th>Кол-во</th>
+    <th>Стоимость</th>
+    <th>Валюта</th>
+    <th>Наценка</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    </thead>
+    <tbody>
+
+<!--        <p th:text="#{equi.id}>">${equi.id}"</p>-->
+
+<!--    <div class="col-lg-10 col-xl-8" tr th:each="equi : ${equis}">-->
+<!--        <h2 th:text="${equi.name}" > </h2>-->
+<!--    </div>-->
+
+
+<div th:each="equi: ${equis}">
+        <tr>
+<!--            <td th:text="${equi.id}"></td>-->
+            <td th:text="${equi.name}"></td>
+            <td th:text="${equi.amount}"></td>
+            <td th:text="${equi.cost}"></td>
+		    <td th:text="${equi.waers}"></td>
+			<td th:text="${equi.markup}"></td>
+
+            <td><a    th:href="@{'http://localhost:1091/admin/edit/' + ${equi.id}}" class="badge badge-primary">Редактировать</a></td>
+            <td><a  method="DELETE" th:href="@{'http://localhost:1091/admin/delete/' + ${equi.id}}" class="badge badge-danger">Удалить</a></td>
+        </tr>
+    </div>
+    <tr>
+<!--       <td colspan="12" ><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a></td>-->
+
+<tr>
+    <td colspan="12" align="left"><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a></td>
+</tr>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
