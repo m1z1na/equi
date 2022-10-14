@@ -1,60 +1,33 @@
 package com.example.equi.controller;
 
-
 import com.example.equi.model.Equi;
 import com.example.equi.EquiRepository;
-//import jdk.nashorn.internal.ir.IdentNode;
-//import org.apache.velocity.exception.ResourceNotFoundException;
+import com.example.equi.service.CalcEqui;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class EquiController {
     @Autowired
-//   @Autowired(required = false)
+
     private EquiRepository equiRepository;
-    private Equi equis;
-    private Model model;
 
 
-    @RequestMapping(value = {"/test"}, method = RequestMethod.GET)
-//    @GetMapping("/test")
-    public String welcome(Model model) {
-//        Iterable<Equi> equi = equiRepository.findAll();
-//        model.addAttribute("equi", equi);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("admin");
-//        return modelAndView;
-        return "admin";
-    }
 
-    //    @GetMapping(value = "/admin")
     @GetMapping(value = "/admin")
     public String main(Model model) {
-//    public String mainn(String firstName) {
         Iterable<Equi> equis = equiRepository.findAll();
-//       Equi equi = equiRepository.findById(6).orElse( null );
-//        model.addAttribute("all", new Equi());
+        // fore
+//        CalcEqui calc = new CalcEqui;
+        for(Equi equi: equis){
+            equi.setSum( CalcEqui.calcSum(equi.getAmount(),equi.getCost(), equi.getMarkup() ) );
+        }
+
         model.addAttribute("equis", equis);
-//        this.firstName = "test";
-//       ModelAndView admin = new ModelAndView("admin.html");
         return "admin";
-//        return "admin";
     }
 
     @GetMapping("admin/add")
@@ -66,9 +39,13 @@ public class EquiController {
     }
 
     @PostMapping("admin/add")
-    public String AdminAddSubmit(@ModelAttribute Equi equi, Model model) {
-        equiRepository.save(equi);
-        model.addAttribute("equis", equiRepository.findAll());
+    public String AdminAddSubmit(@ModelAttribute Equi newequi, Model model) {
+        equiRepository.save(newequi);
+        Iterable<Equi> equis = equiRepository.findAll();
+        for(Equi equi: equis){
+            equi.setSum( CalcEqui.calcSum(equi.getAmount(),equi.getCost(), equi.getMarkup() ) );
+        }
+        model.addAttribute("equis", equis);
         return "admin";
     }
 

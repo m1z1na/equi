@@ -1,23 +1,17 @@
 package com.example.equi.model;
-//import lombok.Data;
-import org.hibernate.annotations.Type;
 import javax.persistence.*;
-//import lombok.Getter;
-//import lombok.Setter;
-import org.springframework.stereotype.Component;
-
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-//@Setter
-//@Getter
+@Setter
+@Getter
 @Entity
-//@Component
 @Table(name = "equii")
-//@Entity(name = "EQUII")
+
 public class Equi {
     @Id
     @Column(name = "id")
@@ -28,7 +22,7 @@ public class Equi {
     private Integer cost;
     private String waers;
     private Integer markup;
-
+    private transient Integer sum;
     public Equi( String name, String waers, Integer amount, Integer cost, Integer markup) {
         this.amount = amount;
         this.waers = waers;
@@ -98,5 +92,13 @@ public class Equi {
 
     public void setMarkup(Integer markup) {
         this.markup = markup;
+    }
+
+    public Integer getSum() {
+        return sum;
+    }
+
+    public void setSum(Integer sum) {
+        this.sum = sum;
     }
 }

@@ -20,18 +20,12 @@
     <th>Стоимость</th>
     <th>Валюта</th>
     <th>Наценка</th>
+    <th>Сумма</th>
     <th></th>
     <th></th>
     <th></th>
     </thead>
     <tbody>
-
-<!--        <p th:text="#{equi.id}>">${equi.id}"</p>-->
-
-<!--    <div class="col-lg-10 col-xl-8" tr th:each="equi : ${equis}">-->
-<!--        <h2 th:text="${equi.name}" > </h2>-->
-<!--    </div>-->
-
 
 <div th:each="equi: ${equis}">
         <tr>
@@ -41,14 +35,13 @@
             <td th:text="${equi.cost}"></td>
 		    <td th:text="${equi.waers}"></td>
 			<td th:text="${equi.markup}"></td>
+			<td th:text="${equi.sum}"></td>
 
             <td><a    th:href="@{'http://localhost:1091/admin/edit/' + ${equi.id}}" class="badge badge-primary">Редактировать</a></td>
             <td><a  method="DELETE" th:href="@{'http://localhost:1091/admin/delete/' + ${equi.id}}" class="badge badge-danger">Удалить</a></td>
         </tr>
     </div>
     <tr>
-<!--       <td colspan="12" ><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a></td>-->
-
 <tr>
     <td colspan="12" align="left"><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a></td>
 </tr>
