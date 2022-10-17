@@ -15,6 +15,10 @@ public class EquiController {
 
     private EquiRepository equiRepository;
 
+    @GetMapping(value = "/")
+    public String index(Model model) {
+        return "index";
+    }
 
 
     @GetMapping(value = "/admin")
