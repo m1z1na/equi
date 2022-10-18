@@ -37,6 +37,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
+      <object connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" object-ref="schemas/public/tables/fin" />
       <object connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" object-ref="schemas/public/tables/equii" />
     </open-files>
   </component>
@@ -45,6 +46,11 @@
     <connection id="7b27c6ea-9c59-402b-ba4e-e3191224e7f8" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" dataset="public.finind" active-filter-id="">
+      <filter id="0eab2f12-84d1-41c3-9d27-16e09e5bf062" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
     <filter-actions connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" dataset="public.demo_table" active-filter-id="">
       <filter id="116707db-0ffc-4e27-a4b8-332cc0db26a2" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="id" operator="=" value="" active="true" />

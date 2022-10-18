@@ -1,33 +1,72 @@
 package com.example.equi.controller;
 
+import com.example.equi.BtripRepository;
+import com.example.equi.FinIndRepository;
+import com.example.equi.FotRepository;
+import com.example.equi.model.Btrip;
 import com.example.equi.model.Equi;
 import com.example.equi.EquiRepository;
+import com.example.equi.model.FOT;
+import com.example.equi.model.FinInd;
+import com.example.equi.service.CalcBtrip;
 import com.example.equi.service.CalcEqui;
+import com.example.equi.service.CalcFOT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
-@Controller
-public class EquiController {
+
+@org.springframework.stereotype.Controller
+public class MainController {
     @Autowired
-
     private EquiRepository equiRepository;
+    @Autowired
+    private FinIndRepository finIndRepository;
+    @Autowired
+    private BtripRepository btripRepository;
+    @Autowired
+    private FotRepository fotRepository;
 
     @GetMapping(value = "/")
     public String index(Model model) {
+        Iterable<FinInd> fin = finIndRepository.findAll();
+        model.addAttribute("fin", fin);
         return "index";
     }
 
+    @GetMapping(value = "/new")
+    public String newform(Model model) {
+        Iterable<Equi> equis = equiRepository.findAll();
+        model.addAttribute("equis", equis);
+        for (Equi equi : equis) {
+            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
+        }
+        Iterable<Btrip> btrips = btripRepository.findAll();
+        for (Btrip btrip : btrips) {
+            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
+                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
+        }
+        model.addAttribute("btrips", btrips);
+
+        Iterable<FOT> fots = fotRepository.findAll();
+        for (FOT fot : fots) {
+            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
+        }
+        model.addAttribute("fot", fots);
+
+        return "new";
+    }
 
     @GetMapping(value = "/admin")
     public String main(Model model) {
         Iterable<Equi> equis = equiRepository.findAll();
         // fore
 //        CalcEqui calc = new CalcEqui;
-        for(Equi equi: equis){
-            equi.setSum( CalcEqui.calcSum(equi.getAmount(),equi.getCost(), equi.getMarkup() ) );
+        for (Equi equi : equis) {
+            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
         }
 
         model.addAttribute("equis", equis);
@@ -39,25 +78,26 @@ public class EquiController {
         Equi equi = new Equi();
         model.addAttribute("equi", equi);
         return "form";
+//        return "new";
 
     }
 
-    @PostMapping("admin/add")
+    @PostMapping("new/add")
     public String AdminAddSubmit(@ModelAttribute Equi newequi, Model model) {
         equiRepository.save(newequi);
         Iterable<Equi> equis = equiRepository.findAll();
-        for(Equi equi: equis){
-            equi.setSum( CalcEqui.calcSum(equi.getAmount(),equi.getCost(), equi.getMarkup() ) );
+        for (Equi equi : equis) {
+            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
         }
         model.addAttribute("equis", equis);
-        return "admin";
+        return "redirect:" + "/new";
     }
 
     @GetMapping("/admin/delete/{equiId}")
     public String AdminDelete(@PathVariable("equiId") Integer id, Model model) {
         equiRepository.deleteById(id);
         model.addAttribute("equis", equiRepository.findAll());
-        return "admin";
+        return "new";
     }
 
     @GetMapping("/admin/edit/{equiId}")
@@ -67,12 +107,17 @@ public class EquiController {
         return "form";
     }
 
-//    @GetMapping("/equi")
-//    @ResponseBody
-//    public List<Equi> getAllEqui() {
-//        return (List<Equi>) equiRepository.findAll();
-//    }
+    @GetMapping("/equi")
+    @ResponseBody
+    public List<Equi> getAllEqui() {
+        return (List<Equi>) equiRepository.findAll();
+    }
 
+    @GetMapping("/fin")
+    @ResponseBody
+    public FinInd getAllfin() {
+        return finIndRepository.findById(1).orElse(null);
+    }
 //    @GetMapping("/equi/{id}")
 //    public ResponseEntity<Equi> getEquiById(@PathVariable(value = "id") Integer Id)
 //            throws ResourceNotFoundException {

@@ -1,12 +1,11 @@
 package com.example.equi;
 
-
-import com.example.equi.model.FinInd;
+import com.example.equi.model.FOT;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FinIndRepository extends CrudRepository<FinInd, Integer> {
+public interface FotRepository extends CrudRepository<FOT, Integer> {
 
 
 }

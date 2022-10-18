@@ -10,12 +10,14 @@
     <title>Miminium</title>
 
     <!-- start: Css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-
+<!--    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">-->
+<!--    <link href="bootstrap.css" type="text/css" th:href="@{bootstrap.css}" rel="stylesheet" />-->
+    <link rel="stylesheet" href="css/bootstrap.css">
     <!-- plugins -->
-    <link rel="stylesheet" type="text/css" href="css/plugins/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/plugins/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="css/plugins/animate.min.css"/>
+    <link rel="stylesheet"  href="css/plugins/font-awesome.min.css"/>
+<!--    <link rel="stylesheet"   href="${path}/static/css/plugins/bootstrap.css"/>-->
+<!--    <link href="css/plugins/bootstrap.css" th:href="@{/css/plugins/bootstrap.css}" rel="stylesheet" />-->
+    <link rel="stylesheet"   href="css/plugins/animate.min.css"/>
     <link href="css/style.css" rel="stylesheet">
     <!-- end: Css -->
 
@@ -103,14 +105,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
+
+<!--                                    <div >-->
+                                    <div th:each="fin: ${fin}">
                                 <tr>
-                                    <td>Энергетика 2022</td>
-                                    <td>Петров Д.А.</td>
+<!--                                                <td th:text="${equi.id}"></td>-->
+                                    <td th:text="${fin.name}"></td>
+                                    <td th:text="${fin.fio}"></td>
+<!--                                    <td>Энергетика 2022</td>-->
+<!--                                    <td>Петров Д.А.</td>-->
                                     <td>2022</td>
                                     <td>2011/04/25</td>
                                     <td>Создан</td>
                                 </tr>
-
+                                    </div>
 
                                 </tbody>
                             </table>
@@ -150,26 +159,26 @@
     <!-- end: Mobile -->
 
     <!-- start: Javascript -->
-<!--    <script src="js/jquery.min.js"></script>-->
-<!--    <script src="js/jquery.ui.min.js"></script>-->
-<!--    <script src="js/bootstrap.min.js"></script>-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 
 
-    <!-- plugins -->
-<!--    <script src="js/plugins/moment.min.js"></script>-->
-<!--    <script src="js/plugins/jquery.datatables.min.js"></script>-->
-<!--    <script src="js/plugins/bootstrap.js"></script>-->
-<!--    <script src="js/plugins/jquery.nicescroll.js"></script>-->
+     plugins
+    <script src="js/plugins/moment.min.js"></script>
+    <script src="js/plugins/jquery.datatables.min.js"></script>
+    <script src="js/plugins/bootstrap.js"></script>
+    <script src="js/plugins/jquery.nicescroll.js"></script>
 
 
-<!--    &lt;!&ndash; custom &ndash;&gt;-->
-<!--    <script src="js/main.js"></script>-->
-<!--    <script type="text/javascript">-->
-<!--  $(document).ready(function(){-->
-<!--    $('#datatables-example').DataTable();-->
-<!--  });-->
-<!--</script>-->
-    <!-- end: Javascript -->
+    <!-- custom -->
+    <script src="js/main.js"></script>
+    <script type="text/javascript">
+  $(document).ready(function(){
+    $('#datatables-example').DataTable();
+  });
+</script>
+<!--     end: Javascript-->
 </body>
 </html>

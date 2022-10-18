@@ -2,23 +2,52 @@ package com.example.equi.model;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
-
-
 
 @Setter
 @Getter
 @Entity
-@Table(name = "finind")
+@Table(name = "fin")
 
 public class FinInd {
     @Id
     @Column(name = "id")
     @GeneratedValue
-    private Long id;
+    private Integer id;
     private String name;
     private String fio;
 
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    @Override
+    public String toString() {
+        return "FinInd{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", fio='" + fio + '\'' +
+                '}';
+    }
 }

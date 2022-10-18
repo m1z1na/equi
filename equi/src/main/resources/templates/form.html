@@ -12,7 +12,7 @@
 <body> 
 <br>
  
-<form class="admin" th:action="@{/admin/add}" th:object="${equi}" method="post">
+<form class="admin" th:action="@{/new/add}" th:object="${equi}" method="post">
     <input type="text" th:field="*{id}" hidden min="0" max="100"/>
     <div class="form-group">
         <label >Название</label>
