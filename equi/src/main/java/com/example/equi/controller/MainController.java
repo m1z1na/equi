@@ -1,18 +1,17 @@
 package com.example.equi.controller;
 
-import com.example.equi.BtripRepository;
-import com.example.equi.FinIndRepository;
-import com.example.equi.FotRepository;
+import com.example.equi.repositories.BtripRepository;
+import com.example.equi.repositories.FinIndRepository;
+import com.example.equi.repositories.FotRepository;
 import com.example.equi.model.Btrip;
 import com.example.equi.model.Equi;
-import com.example.equi.EquiRepository;
+import com.example.equi.repositories.EquiRepository;
 import com.example.equi.model.FOT;
 import com.example.equi.model.FinInd;
 import com.example.equi.service.CalcBtrip;
 import com.example.equi.service.CalcEqui;
 import com.example.equi.service.CalcFOT;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,12 +43,12 @@ public class MainController {
         for (Equi equi : equis) {
             equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
         }
-        Iterable<Btrip> btrips = btripRepository.findAll();
-        for (Btrip btrip : btrips) {
-            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-        }
-        model.addAttribute("btrips", btrips);
+//        Iterable<Btrip> btrips = btripRepository.findAll();
+//        for (Btrip btrip : btrips) {
+//            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
+//                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
+//        }
+        model.addAttribute("btrips", CalcBtrip.calcSumAll( btripRepository.findAll()));
 
         Iterable<FOT> fots = fotRepository.findAll();
         for (FOT fot : fots) {

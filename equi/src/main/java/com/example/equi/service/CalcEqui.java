@@ -1,10 +1,12 @@
 package com.example.equi.service;
 
+import java.math.BigInteger;
+
 public class CalcEqui {
 
-    public static Integer calcSum(Integer amount, Integer cost, Integer markup) {
-        Integer sum;
-        sum = amount * cost + (amount * cost * markup / 100);
+    public static BigInteger calcSum(Integer amount, Integer cost, Integer markup) {
+        BigInteger sum;
+        sum = BigInteger.valueOf(amount * cost + (amount * cost * markup / 100));
         return sum;
     }
 }

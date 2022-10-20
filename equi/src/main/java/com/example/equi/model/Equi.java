@@ -5,6 +5,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.math.BigInteger;
 
 
 @Setter
@@ -22,7 +23,7 @@ public class Equi {
     private Integer cost;
     private String waers;
     private Integer markup;
-    private transient Integer sum;
+    private transient BigInteger sum;
     public Equi( String name, String waers, Integer amount, Integer cost, Integer markup) {
         this.amount = amount;
         this.waers = waers;
@@ -94,11 +95,11 @@ public class Equi {
         this.markup = markup;
     }
 
-    public Integer getSum() {
+    public BigInteger getSum() {
         return sum;
     }
 
-    public void setSum(Integer sum) {
+    public void setSum(BigInteger sum) {
         this.sum = sum;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.equi;
+package com.example.equi.repositories;
 
 import com.example.equi.model.Btrip;
 import com.example.equi.model.Equi;

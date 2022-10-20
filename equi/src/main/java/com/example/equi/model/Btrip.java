@@ -3,6 +3,7 @@ package com.example.equi.model;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Setter
 @Getter
@@ -21,7 +22,7 @@ public class Btrip {
     private Integer daysstay;
     private Integer daystrip;
     private Integer plannedtrips;
-    private transient Integer sum;
+    private transient BigInteger sum;
 
     public Long getId() {
         return Id;
