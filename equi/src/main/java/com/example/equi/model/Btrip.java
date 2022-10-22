@@ -3,7 +3,8 @@ package com.example.equi.model;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
-import java.math.BigInteger;
+import java.math.BigDecimal;
+
 
 @Setter
 @Getter
@@ -22,7 +23,8 @@ public class Btrip {
     private Integer daysstay;
     private Integer daystrip;
     private Integer plannedtrips;
-    private transient BigInteger sum;
+    private Integer finind;
+    private transient BigDecimal sum;
 
     public Long getId() {
         return Id;
@@ -91,5 +93,21 @@ public class Btrip {
                 ", daystrip=" + daystrip +
                 ", plannedtrips=" + plannedtrips +
                 '}';
+    }
+
+    public BigDecimal getSum() {
+        return sum;
+    }
+
+    public void setSum(BigDecimal sum) {
+        this.sum = sum;
+    }
+
+    public Integer getFinind() {
+        return finind;
+    }
+
+    public void setFinind(Integer finind) {
+        this.finind = finind;
     }
 }

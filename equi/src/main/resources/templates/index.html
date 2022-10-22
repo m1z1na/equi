@@ -90,7 +90,8 @@
                             <div class="col-md-6" style="margin-top:5px;">
                                 <button class="btn ripple-infinite btn-gradient btn-info">
                                     <div>
-                                        <span>Создать новый ФинПок</span>
+                                        <span th:href="@{'http://localhost:1091/0}"
+                                         >Создать новый ФинПок</span>
                                     </div>
                                 </button>
                             </div>
@@ -105,15 +106,16 @@
                                     <th>Название</th>
                                     <th>Руководитель</th>
                                     <th>Год</th>
-                                    <th>Дата создания</th>
+<!--                                    <th>Дата создания</th>-->
                                     <th>Статус</th>
+                                    <th> </th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
 
                                 <!--                                    <div >-->
-                                <div th:each="fin: ${fin}">
+                                <div th:each="fin: ${fins}">
                                     <tr>
                                         <!--                                                <td th:text="${equi.id}"></td>-->
                                         <td th:text="${fin.name}"></td>
@@ -121,8 +123,11 @@
                                         <!--                                    <td>Энергетика 2022</td>-->
                                         <!--                                    <td>Петров Д.А.</td>-->
                                         <td>2022</td>
-                                        <td>2011/04/25</td>
+<!--                                        <td>2011/04/25</td>-->
                                         <td>Создан</td>
+
+                                        <td><a th:href="@{'http://localhost:1091/' + ${fin.id}}"
+                                               class="badge badge-primary">Просмотреть</a></td>
                                     </tr>
                                 </div>
 

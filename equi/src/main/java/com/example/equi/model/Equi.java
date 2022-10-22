@@ -2,9 +2,12 @@ package com.example.equi.model;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.repository.query.Param;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 
@@ -23,14 +26,17 @@ public class Equi {
     private Integer cost;
     private String waers;
     private Integer markup;
-    private transient BigInteger sum;
-    public Equi( String name, String waers, Integer amount, Integer cost, Integer markup) {
+
+    private Integer finind;
+    private transient BigDecimal sum;
+    public Equi( String name, String waers, Integer amount, Integer cost, Integer markup,Integer finind) {
         this.amount = amount;
         this.waers = waers;
         this.markup = markup;
         this.amount = amount;
         this.cost = cost;
         this.name = name;
+        this.finind = finind;
     }
 
     public Equi() {
@@ -95,11 +101,20 @@ public class Equi {
         this.markup = markup;
     }
 
-    public BigInteger getSum() {
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(BigInteger sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
+    }
+
+
+    public Integer getFinind() {
+        return finind;
+    }
+
+    public void setFinind(Integer finind) {
+        this.finind = finind;
     }
 }

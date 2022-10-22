@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigInteger;
+import java.math.BigDecimal;
+
 
 @Setter
 @Getter
@@ -19,7 +20,8 @@ public class FOT {
     private String worker;
     private Integer hours;
     private Integer rate;
-    private transient BigInteger sum;
+    private Integer finind;
+    private transient BigDecimal sum;
 
     public Integer getId() {
         return id;
@@ -61,11 +63,19 @@ public class FOT {
         this.rate = rate;
     }
 
-    public BigInteger getSum() {
+    public BigDecimal getSum() {
         return sum;
     }
 
-    public void setSum(BigInteger sum) {
+    public void setSum(BigDecimal sum) {
         this.sum = sum;
+    }
+
+    public Integer getFinind() {
+        return finind;
+    }
+
+    public void setFinind(Integer finind) {
+        this.finind = finind;
     }
 }

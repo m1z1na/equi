@@ -8,9 +8,7 @@ import com.example.equi.model.Equi;
 import com.example.equi.repositories.EquiRepository;
 import com.example.equi.model.FOT;
 import com.example.equi.model.FinInd;
-import com.example.equi.service.CalcBtrip;
-import com.example.equi.service.CalcEqui;
-import com.example.equi.service.CalcFOT;
+import com.example.equi.service.CalcFinInd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,90 +29,46 @@ public class MainController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
-        Iterable<FinInd> fin = finIndRepository.findAll();
-        model.addAttribute("fin", fin);
+        Iterable<FinInd> fins = finIndRepository.findAll();
+        model.addAttribute("fins", fins);
         return "index";
     }
 
-    @GetMapping(value = "/new")
-    public String newform(Model model) {
-        Iterable<Equi> equis = equiRepository.findAll();
-        model.addAttribute("equis", equis);
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
-//        Iterable<Btrip> btrips = btripRepository.findAll();
-//        for (Btrip btrip : btrips) {
-//            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-//                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-//        }
-        model.addAttribute("btrips", CalcBtrip.calcSumAll( btripRepository.findAll()));
-
-        Iterable<FOT> fots = fotRepository.findAll();
-        for (FOT fot : fots) {
-            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
-        }
-        model.addAttribute("fot", fots);
-
-        model.addAttribute("fin", finIndRepository.findById(1).orElse(null));
-
+    @GetMapping(value = "/{finId}")
+    public String newform(@PathVariable("finId") Integer id, Model model) {
+        FinInd fin = finIndRepository.findById(id).orElse(null);
+        model.addAttribute("fin", finIndRepository.findById(id).orElse(null));
+        model.addAttribute("equis", equiRepository.findByFinind(fin.getId()));
+        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findByFinind(fin.getId())));
+        model.addAttribute("fot", CalcFinInd.calcFOTSumAll(fotRepository.findByFinind(fin.getId())));
         return "new";
     }
 
-    @GetMapping(value = "/admin")
-    public String main(Model model) {
-        Iterable<Equi> equis = equiRepository.findAll();
-        // fore
-//        CalcEqui calc = new CalcEqui;
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
 
-        model.addAttribute("equis", equis);
-        return "admin";
-    }
-
-    @GetMapping("admin/add")
-    public String AdminAdd(Model model) {
-        Equi equi = new Equi();
-        model.addAttribute("equi", equi);
-        return "form";
-//        return "new";
-
-    }
     @PostMapping("/addfin")
     public String FinAddSubmit(@ModelAttribute FinInd newFin, Model model) {
         finIndRepository.save(newFin);
         Iterable<Equi> equis = equiRepository.findAll();
         model.addAttribute("equis", equis);
         for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
+            equi.setSum(CalcFinInd.calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
         }
-        Iterable<Btrip> btrips = btripRepository.findAll();
-        for (Btrip btrip : btrips) {
-            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-        }
-        model.addAttribute("btrips", btrips);
+        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findAll()));
 
         Iterable<FOT> fots = fotRepository.findAll();
         for (FOT fot : fots) {
-            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
+            fot.setSum(CalcFinInd.calcFOTSum(fot.getRate(), fot.getHours()));
         }
         model.addAttribute("fot", fots);
         model.addAttribute("fin", finIndRepository.findById(1).orElse(null));
-        return "redirect:" + "/new";
+        return "redirect:" + "/new/" + newFin.getId();
     }
 
     @PostMapping("new/add")
     public String AdminAddSubmit(@ModelAttribute Equi newequi, Model model) {
         equiRepository.save(newequi);
-        Iterable<Equi> equis = equiRepository.findAll();
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
-        model.addAttribute("equis", equis);
-        return "redirect:" + "/new";
+        model.addAttribute("equis", CalcFinInd.calcEquiSumAll(equiRepository.findAll()));
+        return "redirect:" + "/new/" + newequi.getFinind();
     }
 
     @GetMapping("/admin/delete/{equiId}")
@@ -134,54 +88,29 @@ public class MainController {
     // КОМАНДИРОВКИ
     @GetMapping("/addbtrip")
     public String BtripAdd(Model model) {
-        Btrip btrip = new Btrip();
-        model.addAttribute("btrip", btrip);
+        model.addAttribute("btrip", new Btrip());
         return "formbtrip";
-//        return "new";
-
     }
 
     @PostMapping("btripadd")
     public String BtripAddSubmit(@ModelAttribute Btrip newbtrip, Model model) {
         btripRepository.save(newbtrip);
-        Iterable<Equi> equis = equiRepository.findAll();
-        model.addAttribute("equis", equis);
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
-        Iterable<Btrip> btrips = btripRepository.findAll();
-        for (Btrip btrip : btrips) {
-            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-        }
-        model.addAttribute("btrips", btrips);
-
-        Iterable<FOT> fots = fotRepository.findAll();
-        for (FOT fot : fots) {
-            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
-        }
-        model.addAttribute("fot", fots);
-        return "redirect:" + "/new";
+        model.addAttribute("fin", finIndRepository.findById(newbtrip.getFinind()).orElse(null));
+        model.addAttribute("equis", equiRepository.findByFinind(newbtrip.getFinind()));
+        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findByFinind(newbtrip.getFinind())));
+        model.addAttribute("fot", CalcFinInd.calcFOTSumAll(fotRepository.findByFinind(newbtrip.getFinind())));
+        return "redirect:" + "/new/" + newbtrip.getFinind();
     }
 
     @GetMapping("/deletebtrip/{btripId}")
     public String BtripDelete(@PathVariable("btripId") Long id, Model model) {
         btripRepository.deleteById(id);
         Iterable<Equi> equis = equiRepository.findAll();
-        model.addAttribute("equis", equis);
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
-        Iterable<Btrip> btrips = btripRepository.findAll();
-        for (Btrip btrip : btrips) {
-            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-        }
-        model.addAttribute("btrips", btrips);
-
+        model.addAttribute("equis", CalcFinInd.calcEquiSumAll(equiRepository.findAll()));
+        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findAll()));
         Iterable<FOT> fots = fotRepository.findAll();
         for (FOT fot : fots) {
-            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
+            fot.setSum(CalcFinInd.calcFOTSum(fot.getRate(), fot.getHours()));
         }
         model.addAttribute("fot", fots);
         return "redirect:" + "/new";
@@ -199,54 +128,39 @@ public class MainController {
     // ФОТ
     @GetMapping("/addfot")
     public String fotAdd(Model model) {
-        FOT fot = new FOT();
-        model.addAttribute("fot", fot);
+        model.addAttribute("fot", new FOT());
         return "formfot";
-//        return "new";
 
     }
 
     @PostMapping("fotadd")
     public String fotAddSubmit(@ModelAttribute FOT newfot, Model model) {
         fotRepository.save(newfot);
-        Iterable<Equi> equis = equiRepository.findAll();
-        model.addAttribute("equis", equis);
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
-        Iterable<Btrip> btrips = btripRepository.findAll();
-        for (Btrip btrip : btrips) {
-            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-        }
-        model.addAttribute("btrips", btrips);
-
-        Iterable<FOT> fots = fotRepository.findAll();
-        for (FOT fot : fots) {
-            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
-        }
-        model.addAttribute("fot", fots);
-        return "redirect:" + "/new";
+        model.addAttribute("fin", finIndRepository.findById(newfot.getFinind()).orElse(null));
+        model.addAttribute("equis", equiRepository.findByFinind(newfot.getFinind()));
+        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findByFinind(newfot.getFinind())));
+        model.addAttribute("fot", CalcFinInd.calcFOTSumAll(fotRepository.findByFinind(newfot.getFinind())));
+        return "redirect:" + "/new/" + newfot.getFinind();
     }
 
     @GetMapping("/deletefot/{fotId}")
     public String fotDelete(@PathVariable("fotId") Integer id, Model model) {
         fotRepository.deleteById(id);
-        Iterable<Equi> equis = equiRepository.findAll();
-        model.addAttribute("equis", equis);
-        for (Equi equi : equis) {
-            equi.setSum(CalcEqui.calcSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-        }
-        Iterable<Btrip> btrips = btripRepository.findAll();
-        for (Btrip btrip : btrips) {
-            btrip.setSum(CalcBtrip.calcSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-        }
-        model.addAttribute("btrips", btrips);
+//        Iterable<Equi> equis = equiRepository.findAll();
+        model.addAttribute("equis", CalcFinInd.calcEquiSumAll(equiRepository.findAll()));
+//        for (Equi equi : equis) {
+//            equi.setSum(CalcFinInd.calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
+//        }
+//        Iterable<Btrip> btrips = btripRepository.findAll();
+//        for (Btrip btrip : btrips) {
+//            btrip.setSum(CalcFinInd.calcBtripSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
+//                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
+//        }
+        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findAll()));
 
         Iterable<FOT> fots = fotRepository.findAll();
         for (FOT fot : fots) {
-            fot.setSum(CalcFOT.calcSum(fot.getRate(), fot.getHours()));
+            fot.setSum(CalcFinInd.calcFOTSum(fot.getRate(), fot.getHours()));
         }
         model.addAttribute("fot", fots);
         return "redirect:" + "/new";
@@ -266,11 +180,28 @@ public class MainController {
         return (List<Equi>) equiRepository.findAll();
     }
 
-    @GetMapping("/fin")
-    @ResponseBody
-    public FinInd getAllfin() {
-        return finIndRepository.findById(1).orElse(null);
-    }
+//    @GetMapping("/fin")
+//    @ResponseBody
+//    public FinInd getAllfin() {
+//        return finIndRepository.findById(1).orElse(null);
+//    }
+//    @GetMapping(value = "/admin")
+//    public String main(Model model) {
+//        Iterable<Equi> equis = equiRepository.findAll();
+//        for (Equi equi : equis) {
+//            equi.setSum(CalcFinInd.calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
+//        }
+//
+//        model.addAttribute("equis", equis);
+//        return "admin";
+//    }
+//
+//    @GetMapping("admin/add")
+//    public String AdminAdd(Model model) {
+//        Equi equi = new Equi();
+//        model.addAttribute("equi", equi);
+//        return "form";
+//    }
 //    @GetMapping("/equi/{id}")
 //    public ResponseEntity<Equi> getEquiById(@PathVariable(value = "id") Integer Id)
 //            throws ResourceNotFoundException {
