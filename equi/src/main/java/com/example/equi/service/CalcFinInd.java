@@ -5,7 +5,7 @@ import com.example.equi.model.Equi;
 import com.example.equi.model.FOT;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class CalcFinInd {
 
@@ -21,14 +21,6 @@ public class CalcFinInd {
             return sum;
         }
 
-
-        public static Iterable<Btrip> calcBtripSumAll(Iterable<Btrip> btrips){
-            for (Btrip btrip : btrips) {
-                btrip.setSum(calcBtripSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-                        btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-            }
-            return btrips;
-        }
 
 
     public static BigDecimal calcEquiSum(Integer amount, Integer cost, Integer markup) {
@@ -59,4 +51,20 @@ public class CalcFinInd {
         }
         return fots;
     }
+
+
+    public static Iterable<Btrip> calcBtripSumAll(Iterable<Btrip> btrips){
+        for (Btrip btrip : btrips) {
+            btrip.setSum(calcBtripSum( btrip.getCostroad(),
+                    btrip.getCostliving(),
+                    btrip.getCostallowance(),
+                    btrip.getDaysstay(),
+                    btrip.getDaystrip(),
+                    btrip.getPlannedtrips() ));
+        }
+        return btrips;
+    }
+
+
+
 }

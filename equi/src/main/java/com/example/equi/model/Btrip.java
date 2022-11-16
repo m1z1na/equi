@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @Table(name = "btrips")
-public class Btrip {
+public class Btrip{
 
 
     @Id
@@ -95,17 +95,17 @@ public class Btrip {
                 '}';
     }
 
-    public BigDecimal getSum() {
-        return sum;
-    }
-
-    public void setSum(BigDecimal sum) {
-        this.sum = sum;
-    }
-
-    public Integer getFinind() {
-        return finind;
-    }
+//    public BigDecimal getSum() {
+//        return sum;
+//    }
+//
+//    public void setSum(BigDecimal sum) {
+//        this.sum = sum;
+//    }
+//
+//    public Integer getFinind() {
+//        return finind;
+//    }
 
     public void setFinind(Integer finind) {
         this.finind = finind;

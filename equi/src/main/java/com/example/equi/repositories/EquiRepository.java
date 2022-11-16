@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface EquiRepository extends CrudRepository<Equi, Integer> {
 
-    List<Equi> findByFinind(int finind);
+    List<Equi> findByFinind(int finind) ;
 }
 
