@@ -4,9 +4,7 @@ import org.springframework.context.annotation.PropertySource;
 
 import java.util.LinkedHashMap;
 
-
-
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.properties")
 
 public class MyLinkedHashMap<String, V> extends LinkedHashMap<String, V> {
 

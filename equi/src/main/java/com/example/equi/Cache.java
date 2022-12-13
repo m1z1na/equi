@@ -7,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 
-
 import java.util.*;
 
 @PropertySource("classpath:application.properties")
@@ -36,24 +35,26 @@ public class Cache<K, V> {
         list.clear();
         for (Map.Entry<K, V> equi :
                 CACHE_MAP.entrySet()) {
-          list.add( equi.getValue() );
+            list.add(equi.getValue());
         }
 
         return list;
     }
 
     public V getFromCache(K key) {
-        return CACHE_MAP.get( key );
+        return CACHE_MAP.get(key);
     }
 
 
     public void add(K key, V value) {
-        if( CACHE_MAP.size() == 0) {
+        if (CACHE_MAP.size() == 0) {
             type = value.getClass();
         }
-        else if( type == value.getClass()) {
+
+        if (type == value.getClass()) {
             CACHE_MAP.put(key, value);
         }
+
     }
 }
 
