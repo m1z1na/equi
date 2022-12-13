@@ -1,76 +1,57 @@
 package com.example.equi;
 
 import com.example.equi.model.Equi;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-public class Cache {
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 
 
-    private static List<Equi> list = new ArrayList<>();
-    private static final Map<Integer, Equi> EQUI_REPOSITORY_MAP = new HashMap<>();
+import java.util.*;
 
-    public static List<Equi> readAll() {
+@PropertySource("classpath:application.properties")
+@Data
+@Service
+public class Cache<K, V> {
+
+    @Value("${size}")
+    private int newsize;
+    private Object type;
+
+    private List<V> list = (List<V>) new ArrayList<Equi>();
+
+    private final MyLinkedHashMap<K, V> CACHE_MAP = new MyLinkedHashMap<K, V>(newsize);
+
+    public void setNewSize(int newsize) {
+        this.newsize = newsize;
+    }
+
+    public int showSize() {
+        return newsize;
+    }
+
+
+    public List<V> getAll() {
         list.clear();
-        for (Map.Entry<Integer, Equi> equi :
-                EQUI_REPOSITORY_MAP.entrySet()) {
-            list.add(EQUI_REPOSITORY_MAP.get(equi.getValue().getId()));
+        for (Map.Entry<K, V> equi :
+                CACHE_MAP.entrySet()) {
+          list.add( equi.getValue() );
         }
 
         return list;
     }
 
-    public static List<Equi> read(int id) {
+    public V getFromCache(K key) {
+        return CACHE_MAP.get( key );
+    }
 
-        list.clear();
-        for (Map.Entry<Integer, Equi> equi :
-                EQUI_REPOSITORY_MAP.entrySet()) {
-            if (equi.getValue().getFinind() == id) {
 
-                list.add(EQUI_REPOSITORY_MAP.get(equi.getValue().getId()));
-            }
+    public void add(K key, V value) {
+        if( CACHE_MAP.size() == 0) {
+            type = value.getClass();
         }
-        return list;
-
-    }
-    //add
-    public static void create(Equi equi) {
-        equi.setTimes(System.currentTimeMillis());
-        EQUI_REPOSITORY_MAP.put(equi.getId(), equi);
-    }
-
-    public static int test() {
-
-        return EQUI_REPOSITORY_MAP.size();
-    }
-
-    public static void delete() throws InterruptedException {
-
-        Thread.sleep(5000);
-        if (EQUI_REPOSITORY_MAP.size() > 3) {
-
-
-            for (Map.Entry<Integer, Equi> equi :
-                    EQUI_REPOSITORY_MAP.entrySet()) {
-                if (EQUI_REPOSITORY_MAP.size() <= 3) {
-                    break;
-                } else {
-                    EQUI_REPOSITORY_MAP.remove(equi.getValue().getId());
-                }
-            }
-
-        } else {
-            for (Map.Entry<Integer, Equi> equi :
-                    EQUI_REPOSITORY_MAP.entrySet()) {
-                if (System.currentTimeMillis() - equi.getValue().getTimes() >= 20000) {
-
-                    EQUI_REPOSITORY_MAP.remove(equi.getValue().getId());
-                }
-            }
+        else if( type == value.getClass()) {
+            CACHE_MAP.put(key, value);
         }
     }
 }
