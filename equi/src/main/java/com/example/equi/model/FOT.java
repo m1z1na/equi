@@ -1,9 +1,10 @@
 package com.example.equi.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+
 import java.math.BigDecimal;
 
 
@@ -11,10 +12,10 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @Table(name = "fot")
-public class FOT {
+public class FOT implements IFinIndChild{
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String workname;
     private String worker;
@@ -77,5 +78,18 @@ public class FOT {
 
     public void setFinind(Integer finind) {
         this.finind = finind;
+    }
+
+    @Override
+    public String toString() {
+        return "FOT{" +
+                "id=" + id +
+                ", workname='" + workname + '\'' +
+                ", worker='" + worker + '\'' +
+                ", hours=" + hours +
+                ", rate=" + rate +
+                ", finind=" + finind +
+                ", sum=" + sum +
+                '}';
     }
 }

@@ -155,10 +155,10 @@
                                         <td th:text="${fot.hours}"></td>
                                         <td th:text="${fot.rate}"></td>
                                         <td th:text="${fot.sum}"></td>
-                                        <td><a th:href="@{'http://localhost:1091/editfot/' + ${fot.id}}"
+                                        <td><a th:href="@{'http://localhost:8081/editfot/' + ${fot.id}}"
                                                class="badge badge-primary">Редактировать</a></td>
                                         <td><a method="DELETE"
-                                               th:href="@{'http://localhost:1091/deletefot/' + ${fot.id}}"
+                                               th:href="@{'http://localhost:8081/deletefot/' + ${fot.id}}"
                                                class="badge badge-danger">Удалить</a></td>
                                     </tr>
                                 </div>
@@ -203,10 +203,10 @@
                                         <td th:text="${equi.markup}"></td>
                                         <td th:text="${equi.sum}"></td>
 
-                                        <td><a th:href="@{'http://localhost:1091/admin/edit/' + ${equi.id}}"
+                                        <td><a th:href="@{'http://localhost:8081/admin/edit/' + ${equi.id}}"
                                                class="badge badge-primary">Редактировать</a></td>
                                         <td><a method="DELETE"
-                                               th:href="@{'http://localhost:1091/admin/delete/' + ${equi.id}}"
+                                               th:href="@{'http://localhost:8081/admin/delete/' + ${equi.id}}"
                                                class="badge badge-danger">Удалить</a></td>
                                     </tr>
                                 </div>
@@ -216,7 +216,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <p colspan="12" align="center"><a th:href="@{/admin/add}" class="badge badge-success">Добавить</a>
+                            <p colspan="12" align="center"><a th:href="@{/admin/addequi}" class="badge badge-success">Добавить</a>
                             </p>
 
 
@@ -252,10 +252,10 @@
                                         <td th:text="${btrip.daystrip}"></td>
                                         <td th:text="${btrip.plannedtrips}"></td>
                                         <td th:text="${btrip.sum}"></td>
-                                        <td><a th:href="@{'http://localhost:1091/editbtrip/' + ${btrip.id}}"
+                                        <td><a th:href="@{'http://localhost:8081/editbtrip/' + ${btrip.id}}"
                                                class="badge badge-primary">Редактировать</a></td>
                                         <td><a method="DELETE"
-                                               th:href="@{'http://localhost:1091/deletebtrip/' + ${btrip.id}}"
+                                               th:href="@{'http://localhost:8081/deletebtrip/' + ${btrip.id}}"
                                                class="badge badge-danger">Удалить</a></td>
                                     </tr>
                                 </div>

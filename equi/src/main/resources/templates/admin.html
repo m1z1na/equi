@@ -44,9 +44,9 @@
             <td th:text="${equi.markup}"></td>
             <td th:text="${equi.sum}"></td>
 
-            <td><a th:href="@{'http://localhost:1091/admin/edit/' + ${equi.id}}" class="badge badge-primary">Редактировать</a>
+            <td><a th:href="@{'http://localhost:8081/admin/edit/' + ${equi.id}}" class="badge badge-primary">Редактировать</a>
             </td>
-            <td><a method="DELETE" th:href="@{'http://localhost:1091/admin/delete/' + ${equi.id}}"
+            <td><a method="DELETE" th:href="@{'http://localhost:8081/admin/delete/' + ${equi.id}}"
                    class="badge badge-danger">Удалить</a></td>
         </tr>
     </div>

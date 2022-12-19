@@ -35,10 +35,12 @@
       <console name="Connection" type="STANDARD" schema="information_schema" session="Main" />
     </connection>
   </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
-      <object connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" object-ref="schemas/public/tables/fin" />
-      <object connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" object-ref="schemas/public/tables/equii" />
+      <object connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" object-ref="schemas/public/tables/equi" />
     </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
@@ -57,6 +59,7 @@
       </filter>
     </filter-actions>
     <filter-actions connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" dataset="public.equi" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" dataset="public.fin" active-filter-id="" />
     <filter-actions connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" dataset="pg_catalog.pg_am" active-filter-id="" />
     <filter-actions connection-id="18dae4e7-cbc0-47c5-8a1b-0d55a4fe2713" dataset="public.equii" active-filter-id="EMPTY_FILTER" />
   </component>

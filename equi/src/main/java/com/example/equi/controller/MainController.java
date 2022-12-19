@@ -2,291 +2,187 @@ package com.example.equi.controller;
 
 import com.example.equi.Cache;
 import com.example.equi.model.*;
-import com.example.equi.service.FinIndicatorService;
+import com.example.equi.service.FinIndicatorServiceApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
-@org.springframework.stereotype.Controller
+@Controller
 public class MainController {
-//    @Autowired
-//    private EquiRepository equiRepository;
-//    @Autowired
-//    private FinIndRepository finIndRepository;
-//    @Autowired
-//    private BtripRepository btripRepository;
-//    @Autowired
-//    private FotRepository fotRepository;
-//
-//    private FinIndicatorService service = new FinIndicatorService( finIndRepository );
-//    private BtripModel btripModel = new BtripModel();
+
+    @Autowired
+    private final FinIndicatorServiceApi finIndicatorService;
+
+    @Autowired
+    private final Cache cache;
+
+    public MainController(FinIndicatorServiceApi finIndicatorService, Cache cache) {
+        this.finIndicatorService = finIndicatorService;
+        this.cache = cache;
+    }
+
+    @GetMapping(value = "/fot_db")
+    @ResponseBody
+    public List<FOT> fot() {
+        List<FOT> list = finIndicatorService.getFOT(1);
+        for (FOT element : list) {
+            cache.put(element, element);
+        }
+        return finIndicatorService.getFOT(1);
+    }
+
+    @GetMapping(value = "/equi_db")
+    @ResponseBody
+    public List<Equi> test2() {
+
+        return finIndicatorService.getEqui(1);
+    }
+    //для теста
+    @GetMapping(value = "/cache")
+    @ResponseBody
+    public List test4() {
+
+        return finIndicatorService.getEquiCache(1);
+    }
+    //для теста
+    @GetMapping(value = "/cache2")
+    @ResponseBody
+    public List test42() {
+
+        return finIndicatorService.getEquiCacheAll();
+    }
+
 
     @GetMapping(value = "/")
     public String index(Model model) {
-//        Iterable<FinInd> fins = finIndRepository.findAll();
-        model.addAttribute("fins", FinIndicatorService.getAll());
+        model.addAttribute("fins", finIndicatorService.getAll());
         return "index";
     }
 
-   @GetMapping(value = "/{finId}")
+    @GetMapping(value = "/{finId}")
 
     public String newform(@PathVariable("finId") Integer id, Model model) throws InterruptedException {
-       Optional<FinInd> test = FinIndicatorService.getFin(id);
-        //локальный кэш, кэшировать вызов репозитория
-        //если >  1 мин, то обновить элемент в кэше
-
-        model.addAttribute("fin", FinIndicatorService.getFin(id));
-//        model.addAttribute("equis", FinIndicatorService.getEqui(id));
-        model.addAttribute("equis", FinIndicatorService.cache(id));
-        model.addAttribute("btrips",  FinIndicatorService.getBtrip(id));
-        model.addAttribute("fot",  FinIndicatorService.getFot(id));
-//        model.addAttribute("fot",  FinIndicatorService.cache(id));
+        model.addAttribute("fin", finIndicatorService.getFin(id));
+        model.addAttribute("btrips", finIndicatorService.getBtrip(id));
+        model.addAttribute("equis", finIndicatorService.getEqui(id));
+        model.addAttribute("fot", finIndicatorService.getFOT(id));
         return "new";
 
     }
 
-    @GetMapping(value = "no/{finId}")
 
-    public String newform2(@PathVariable("finId") Integer id, Model model) throws InterruptedException {
-        Optional<FinInd> test = FinIndicatorService.getFin(id);
-        //локальный кэш, кэшировать вызов репозитория
-        //если >  1 мин, то обновить элемент в кэше
 
-        model.addAttribute("fin", FinIndicatorService.getFin(id));
-        model.addAttribute("equis", FinIndicatorService.getEqui(id));
-//        model.addAttribute("equis", FinIndicatorService.cache(id));
-//        model.addAttribute("btrips",  FinIndicatorService.getBtrip(id));
-        model.addAttribute("fot",  FinIndicatorService.getFot(id));
-//        model.addAttribute("fot",  FinIndicatorService.cache(id));
-        return "new";
-
-    }
-    @ResponseBody
-    @GetMapping("/test222")
-    public List<Equi> Fdffdf(Model model) {
-       return  Cache.readAll();
-    }
-    @ResponseBody
-    @GetMapping("/test221")
-    public int Fdfkkfdf(Model model) {
-        return  Cache.test();
+    @PostMapping("new/addequi")
+    public String AdminAddSubmit(@ModelAttribute Equi newequi, Model model) {
+        finIndicatorService.addEqui(newequi);
+        model.addAttribute("fin", finIndicatorService.getFin(newequi.getFinind()));
+        model.addAttribute("btrips", finIndicatorService.getBtrip(newequi.getFinind()));
+        model.addAttribute("equis", finIndicatorService.getEqui(newequi.getFinind()));
+        model.addAttribute("fot", finIndicatorService.getFOT(newequi.getFinind()));
+        return "redirect:" + "/new/" + newequi.getFinind();
     }
 
+    //
+    @GetMapping("/admin/delete/{equiId}")
+    public String AdminDelete(@PathVariable("equiId") Integer id, Model model) {
+        finIndicatorService.deleteEqui(id);
 
-    @PostMapping("/addfin")
-    public String FinAddSubmit(@ModelAttribute FinInd newFin, Model model) {
-//        finIndRepository.save(newFin);
-//        Iterable<Equi> equis = equiRepository.findAll();
-//        model.addAttribute("equis", equis);
-//        for (Equi equi : equis) {
-//            equi.setSum(CalcFinInd.calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-//        }
-////        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findAll()));
-//
-//        Iterable<FOT> fots = fotRepository.findAll();
-//        for (FOT fot : fots) {
-//            fot.setSum(CalcFinInd.calcFOTSum(fot.getRate(), fot.getHours()));
-//        }
-//        model.addAttribute("fot", fots);
-//        model.addAttribute("fin", finIndRepository.findById(1).orElse(null));
-        return "redirect:" + "/new/" + newFin.getId();
+        return "index";
     }
-//
-//    @PostMapping("new/add")
-//    public String AdminAddSubmit(@ModelAttribute Equi newequi, Model model) {
-//        equiRepository.save(newequi);
-//        model.addAttribute("equis", CalcFinInd.calcEquiSumAll(equiRepository.findAll()));
-//        return "redirect:" + "/new/" + newequi.getFinind();
-//    }
-//
-//    @GetMapping("/admin/delete/{equiId}")
-//    public String AdminDelete(@PathVariable("equiId") Integer id, Model model) {
-//        equiRepository.deleteById(id);
-//        model.addAttribute("equis", equiRepository.findAll());
-//        return "new";
-//    }
-//
-//    @GetMapping("/admin/edit/{equiId}")
-//    public String AdminEdit(@PathVariable("equiId") Integer id, Model model) {
-//        Equi equi = equiRepository.findById(id).orElse(null);
-//        model.addAttribute("equi", equi);
-//        return "form";
-//    }
-//
+
+    //
+    @GetMapping("/admin/edit/{equiId}")
+    public String AdminEdit(@PathVariable("equiId") Integer id, Model model) {
+        Equi equi = finIndicatorService.getEquiById(id).orElse(null);
+        model.addAttribute("equi", equi);
+        return "formequi";
+    }
+
+    //
 //    // КОМАНДИРОВКИ
-//    @GetMapping("/addbtrip")
-//    public String BtripAdd(Model model) {
-//        model.addAttribute("btrip", new Btrip());
-//        return "formbtrip";
-//    }
-//
-//    @PostMapping("btripadd")
-//    public String BtripAddSubmit(@ModelAttribute Btrip newbtrip, Model model) {
-////        btripRepository.save(newbtrip);
-//        model.addAttribute("fin", finIndRepository.findById(newbtrip.getFinind()).orElse(null));
-//        model.addAttribute("equis", equiRepository.findByFinind(newbtrip.getFinind()));
-////        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findByFinind(newbtrip.getFinind())));
-//        model.addAttribute("fot", CalcFinInd.calcFOTSumAll(fotRepository.findByFinind(newbtrip.getFinind())));
-//        return "redirect:" + "/new/" + newbtrip.getFinind();
-//    }
-//
-//    @GetMapping("/deletebtrip/{btripId}")
-//    public String BtripDelete(@PathVariable("btripId") Long id, Model model) {
-////        btripRepository.deleteById(id);
-//        Iterable<Equi> equis = equiRepository.findAll();
-//        model.addAttribute("equis", CalcFinInd.calcEquiSumAll(equiRepository.findAll()));
-////        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findAll()));
-//        Iterable<FOT> fots = fotRepository.findAll();
-//        for (FOT fot : fots) {
-//            fot.setSum(CalcFinInd.calcFOTSum(fot.getRate(), fot.getHours()));
-//        }
-//        model.addAttribute("fot", fots);
-//        return "redirect:" + "/new";
-//    }
-//
-//
-//    @GetMapping("/editbtrip/{btripId}")
-//    public String BtripEdit(@PathVariable("btripId") Long id, Model model) {
-////        Btrip btrip = btripRepository.findById(id).orElse(null);
-////        model.addAttribute("btrip", btrip);
-//        return "formbtrip";
-//    }
-//
-//
-//    // ФОТ
-//    @GetMapping("/addfot")
-//    public String fotAdd(Model model) {
-//        model.addAttribute("fot", new FOT());
-//        return "formfot";
-//
-//    }
-//
-//    @PostMapping("fotadd")
-//    public String fotAddSubmit(@ModelAttribute FOT newfot, Model model) {
-//        fotRepository.save(newfot);
-//        model.addAttribute("fin", finIndRepository.findById(newfot.getFinind()).orElse(null));
-//        model.addAttribute("equis", equiRepository.findByFinind(newfot.getFinind()));
-////        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findByFinind(newfot.getFinind())));
-//        model.addAttribute("fot", CalcFinInd.calcFOTSumAll(fotRepository.findByFinind(newfot.getFinind())));
-//        return "redirect:" + "/new/" + newfot.getFinind();
-//    }
-//
-//    @GetMapping("/deletefot/{fotId}")
-//    public String fotDelete(@PathVariable("fotId") Integer id, Model model) {
-//        fotRepository.deleteById(id);
-////        Iterable<Equi> equis = equiRepository.findAll();
-//        model.addAttribute("equis", CalcFinInd.calcEquiSumAll(equiRepository.findAll()));
-////        for (Equi equi : equis) {
-////            equi.setSum(CalcFinInd.calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-////        }
-////        Iterable<Btrip> btrips = btripRepository.findAll();
-////        for (Btrip btrip : btrips) {
-////            btrip.setSum(CalcFinInd.calcBtripSum(btrip.getCostroad(), btrip.getCostliving(), btrip.getCostallowance(),
-////                    btrip.getDaysstay(), btrip.getDaystrip(), btrip.getPlannedtrips()));
-////        }
-////        model.addAttribute("btrips", CalcFinInd.calcBtripSumAll(btripRepository.findAll()));
-//
-//        Iterable<FOT> fots = fotRepository.findAll();
-//        for (FOT fot : fots) {
-//            fot.setSum(CalcFinInd.calcFOTSum(fot.getRate(), fot.getHours()));
-//        }
-//        model.addAttribute("fot", fots);
-//        return "redirect:" + "/new";
-//    }
-//
-//
-//    @GetMapping("/editfot/{fotId}")
-//    public String BtripEdit(@PathVariable("fotId") Integer id, Model model) {
-//        FOT fot = fotRepository.findById(id).orElse(null);
-//        model.addAttribute("fot", fot);
-//        return "formfot";
-//    }
-//
-//    @GetMapping("/equi")
-//    @ResponseBody
-//    public List<Equi> getAllEqui() {
-//        return (List<Equi>) equiRepository.findAll();
-//    }
+    @GetMapping("/addbtrip")
+    public String BtripAdd(Model model) {
+        model.addAttribute("btrip", new Btrip());
+        return "formbtrip";
+    }
 
-//    @GetMapping("/fin")
-//    @ResponseBody
-//    public FinInd getAllfin() {
-//        return finIndRepository.findById(1).orElse(null);
-//    }
-//    @GetMapping(value = "/admin")
-//    public String main(Model model) {
-//        Iterable<Equi> equis = equiRepository.findAll();
-//        for (Equi equi : equis) {
-//            equi.setSum(CalcFinInd.calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
-//        }
-//
-//        model.addAttribute("equis", equis);
-//        return "admin";
-//    }
-//
-//    @GetMapping("admin/add")
-//    public String AdminAdd(Model model) {
-//        Equi equi = new Equi();
-//        model.addAttribute("equi", equi);
-//        return "form";
-//    }
-//    @GetMapping("/equi/{id}")
-//    public ResponseEntity<Equi> getEquiById(@PathVariable(value = "id") Integer Id)
-//            throws ResourceNotFoundException {
-//        Equi employee = (Equi) equiRepository.findById(Id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Equi not found for this id :: " + Id));
-//        return ResponseEntity.ok().body(employee);
-//    }
-//
-//    @PostMapping("/equi")
-//    @ResponseBody
-//    public Equi createEqui(@Valid @RequestBody Equi equi) {
-//        return equiRepository.save(equi);
-//    }
-//
-//    @PutMapping("/equi/{id}")
-//    @ResponseBody
-//    public ResponseEntity<Equi> updateEqui(@PathVariable(value = "id") Integer Id,
-//                                           @Valid @RequestBody Equi equiDetails) throws ResourceNotFoundException {
-//        Equi equi = equiRepository.findById(Id).orElse(null);
-////        Equi equi = (Equi) equi2;
-////        model.addAttribute("equi", equi);
-//        equi.setAmount(equiDetails.getAmount());
-//        equi.setCost(equiDetails.getCost());
-//        equi.setWaers(equiDetails.getWaers());
-//        equi.setName(equiDetails.getName());
-//        equi.setMarkup(equiDetails.getMarkup());
-//        final Equi updatedEmployee = equiRepository.save(equi);
-//        return ResponseEntity.ok(updatedEmployee);
-//
-//
-////        Equi equi = (Equi) equiRepository.findById(Id)
-////                .orElseThrow(() -> new ResourceNotFoundException("Equi not found for this id :: " + Id));
-//
-////        equi.setAmount(equiDetails.getAmount());
-////        equi.setCost(equiDetails.getCost());
-////        equi.setWaers(equiDetails.getWaers());
-////        equi.setName(equiDetails.getName());
-////        equi.setMarkup(equiDetails.getMarkup());
-////        final Equi updatedEmployee = equiRepository.save(equi);
-////        return ResponseEntity.ok(updatedEmployee);
-//    }
-//
-//    @DeleteMapping("/equi/{id}")
-//    @ResponseBody
-//    public Map<String, Boolean> deleteEqui(@PathVariable(value = "id") Integer Id)
-//            throws ResourceNotFoundException {
-//        Equi equi = equiRepository.findById(Id)
-//                .orElseThrow(() -> new ResourceNotFoundException("Equi not found for this id :: " + Id));
-//
-//        equiRepository.delete(equi);
-//        Map<String, Boolean> response = new HashMap<>();
-//        response.put("deleted", Boolean.TRUE);
-//        return response;
-//    }
+    @PostMapping("btripadd")
+    public String BtripAddSubmit(@ModelAttribute Btrip newbtrip, Model model) {
+        finIndicatorService.addBtrip(newbtrip);
+        model.addAttribute("fin", finIndicatorService.getFin(newbtrip.getFinind()));
+        model.addAttribute("btrips", finIndicatorService.getBtrip(newbtrip.getFinind()));
+        model.addAttribute("equis", finIndicatorService.getEqui(newbtrip.getFinind()));
+        model.addAttribute("fot", finIndicatorService.getFOT(newbtrip.getFinind()));
+        return "redirect:" + "/new/" + newbtrip.getFinind();
+    }
+
+    @GetMapping("/deletebtrip/{btripId}")
+    public String BtripDelete(@PathVariable("btripId") Long id, Model model) {
+        finIndicatorService.deleteBtrip(id);
+        return "redirect:" + "/new";
+    }
 
 
+    @GetMapping("/editbtrip/{btripId}")
+    public String BtripEdit(@PathVariable("btripId") Long id, Model model) {
+        Btrip btrip = finIndicatorService.getBtripById(id).orElse(null);
+        model.addAttribute("btrip", btrip);
+        return "formbtrip";
+    }
+
+    // ФОТ
+    @GetMapping("/addfot")
+    public String fotAdd(Model model) {
+        model.addAttribute("fot", new FOT());
+        return "formfot";
+
+    }
+
+    @PostMapping("fotadd")
+    public String fotAddSubmit(@ModelAttribute FOT newfot, Model model) {
+        System.out.println(newfot.toString());
+        finIndicatorService.addFOT(newfot);
+        model.addAttribute("fin", finIndicatorService.getFin(newfot.getFinind()));
+        model.addAttribute("btrips", finIndicatorService.getBtrip(newfot.getFinind()));
+        model.addAttribute("equis", finIndicatorService.getEqui(newfot.getFinind()));
+        model.addAttribute("fot", finIndicatorService.getFOT(newfot.getFinind()));
+        return "redirect:" + "/new/" + newfot.getFinind();
+    }
+
+
+    @GetMapping("/deletefot/{fotId}")
+    public String fotDelete(@PathVariable("fotId") Integer id, Model model) {
+        finIndicatorService.getFOTById(id);
+        return "redirect:" + "/new";
+    }
+
+    @GetMapping("/editfot/{fotId}")
+    public String BtripEdit(@PathVariable("fotId") Integer id, Model model) {
+        FOT fot = finIndicatorService.getFOTById(id).orElse(null);
+        model.addAttribute("fot", fot);
+        return "formfot";
+    }
+
+
+    @GetMapping("admin/addequi")
+    public String AdminAdd(Model model) {
+        Equi equi = new Equi();
+
+        model.addAttribute("equi", equi);
+        return "formequi";
+    }
+
+//    @PostMapping("/addfin")
+//    public String FinAddSubmit(@ModelAttribute FinInd newFin, Model model) {
+//        finIndicatorService.addFinInd(newequi);
+//        model.addAttribute("fin",  finIndicatorService.getFin(newequi.getFinind()));
+//        model.addAttribute("btrips", finIndicatorService.getBtrip(newequi.getFinind()));
+//        model.addAttribute("equis", finIndicatorService.getEqui(newequi.getFinind()));
+//        model.addAttribute("fot", finIndicatorService.getFOT(newequi.getFinind()));
+//        return "redirect:" + "/new/" + newFin.getId();
+//    }
 }

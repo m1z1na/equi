@@ -1,25 +1,22 @@
 package com.example.equi.model;
-import javax.persistence.*;
+
+
+
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.repository.query.Param;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-
 
 @Setter
 @Getter
 @Entity
 @Table(name = "equii")
 
-public class Equi {
+public class Equi implements IFinIndChild{
     @Id
     @Column(name = "id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private Integer amount;
@@ -30,15 +27,7 @@ public class Equi {
     private Integer finind;
     private transient BigDecimal sum;
 
-    public Long getTimes() {
-        return times;
-    }
 
-    public void setTimes(Long times) {
-        this.times = times;
-    }
-
-    private transient Long times;
     public Equi( String name, String waers, Integer amount, Integer cost, Integer markup,Integer finind) {
         this.amount = amount;
         this.waers = waers;
@@ -47,7 +36,7 @@ public class Equi {
         this.cost = cost;
         this.name = name;
         this.finind = finind;
-        this.times = times;
+
     }
 
     public Equi() {

@@ -10,8 +10,8 @@
         <module name="equi" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="equi" target="1.8" />
+    <bytecodeTargetLevel target="9">
+      <module name="equi" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

@@ -6,6 +6,7 @@ import com.example.equi.model.FOT;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalcFinInd {
 
@@ -30,7 +31,7 @@ public class CalcFinInd {
     }
 
 
-    public static Iterable<Equi> calcEquiSumAll(Iterable<Equi> equis){
+    public static List<Equi> calcEquiSumAll(List<Equi> equis){
         for (Equi equi : equis) {
             equi.setSum(calcEquiSum(equi.getAmount(), equi.getCost(), equi.getMarkup()));
         }
@@ -45,7 +46,7 @@ public class CalcFinInd {
     }
 
 
-    public static Iterable<FOT> calcFOTSumAll(Iterable<FOT> fots){
+    public static List<FOT> calcFOTSumAll(List<FOT> fots){
         for (FOT fot : fots) {
             fot.setSum(calcFOTSum(fot.getHours( ), fot.getRate()));
         }
@@ -53,7 +54,7 @@ public class CalcFinInd {
     }
 
 
-    public static Iterable<Btrip> calcBtripSumAll(Iterable<Btrip> btrips){
+    public static List<Btrip> calcBtripSumAll(List<Btrip> btrips){
         for (Btrip btrip : btrips) {
             btrip.setSum(calcBtripSum( btrip.getCostroad(),
                     btrip.getCostliving(),
